@@ -17,6 +17,7 @@ func main() {
 	r := gin.New()
 	r.GET("/student", GetAllStudent)
 	r.POST("/student", AddStudent)
+	r.DELETE("/student/:id", DeleteStudent)
 	r.POST("/checkin", Check)
 	r.GET("/tally", Tally)
 	r.Run()
@@ -64,6 +65,17 @@ func AddStudent(c *gin.Context) {
 	}
 	DB.Create(&s)
 	c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "result": s})
+}
+
+func DeleteStudent(c *gin.Context) {
+	id := c.Param("id")
+	student := Student{ID: id}
+	result := DB.Table("student").Where("id = ?", id).Delete(&student)
+	if result.RowsAffected > 0 {
+		c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "result": true})
+	} else {
+		c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "result": false})
+	}
 }
 
 type Checkin struct {
