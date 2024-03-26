@@ -99,7 +99,8 @@ func Check(c *gin.Context) {
 	var ck Checkin
 	r := DB.Table("checkin").Where("student_id = ? AND checkin_date = ?", checkIn.StudentId, checkIn.CheckinDate.Format(time.DateOnly)).Scan(&ck)
 	if r.RowsAffected > 0 {
-		c.JSON(http.StatusOK, gin.H{"code": http.StatusNotModified, "message": "今日数据已存在"})
+		DB.Table("checkin").Where("student_id = ? AND checkin_date = ?", checkIn.StudentId, checkIn.CheckinDate.Format(time.DateOnly)).Update("state", checkIn.State)
+		c.JSON(http.StatusOK, gin.H{"code": http.StatusOK, "message": "今日数据修改成功"})
 		return
 	}
 	DB.Create(&checkIn)
