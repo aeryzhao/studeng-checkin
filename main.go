@@ -141,7 +141,7 @@ func Tally(c *gin.Context) {
 }
 
 func init() {
-	db, err := gorm.Open(mysql.Open("root:rootroot@tcp(127.0.0.1:3306)/student_checkin?charset=utf8mb4&parseTime=True&loc=Local"), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open("root:rootroot@tcp(192.168.10.110:3306)/student_checkin?charset=utf8mb4&parseTime=True&loc=Local"), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
